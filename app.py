@@ -1,5 +1,14 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect
 import os
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use a service account
+cred = credentials.Certificate('college-course-logger-44444-firebase-adminsdk-w0wnw-aa3b6e19e8.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 app = Flask(__name__)
 
@@ -7,7 +16,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-# Fix css sync errors
+# Fix sync errors
 @app.context_processor
 def override_url_for():
     return dict(url_for=dated_url_for)
